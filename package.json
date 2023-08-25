@@ -1,8 +1,8 @@
 {
   "name": "@0xdwong/ai-translator",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "An AI translator",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest --config jestconfig.json",
     "build": "tsc"
