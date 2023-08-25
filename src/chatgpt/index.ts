@@ -28,11 +28,11 @@ const checkConfiguration = async () => {
   if (!process.env.OPENAI_API_KEY) {
     errors.push('The OPENAI_API_KEY environment variable is not set.');
   }
-  try {
-    await fs.access(promptFile);
-  } catch (e) {
-    errors.push(`The prompt file "${promptFile}" does not exist.`);
-  }
+  // try {
+  //   await fs.access(promptFile);
+  // } catch (e) {
+  //   errors.push(`The prompt file "${promptFile}" does not exist.`);
+  // }
   if (errors.length) {
     console.error('Errors:');
     console.error(errors.join('\n'));
@@ -154,7 +154,19 @@ export async function translate(text: string) {
   // const markdown = await readTextFile(filePath);
   const markdown = text;
 
-  const instruction = await readTextFile(promptFile);
+  // const instruction = await readTextFile(promptFile);
+  const instruction =`
+  I am translating the React documentation for Chinese
+  Please translate the Markdown content I'll paste later to Chinese.
+  
+  You must strictly follow the rules below.
+  
+  - Never change the Markdown markup structure. Don't add or remove links. Do not change any URL.
+  - Never change the contents of code blocks even if they appear to have a bug. Importantly, never touch lines containing the \`omittedCodeBlock-xxxxxx\` keyword.
+  - Always preserve the original line breaks. Do not add or remove blank lines.
+  - Never touch the permalink such as \`{/*try-react*/}\` at the end of each heading.
+  - Never touch HTML-like tags such as \`<Notes>\` or \`<YouWillLearn>\`.
+  `;
 
   const { output: replacedMd, codeBlocks } = replaceCodeBlocks(markdown);
   const fragments = splitStringAtBlankLines(replacedMd, fragmentSize)!;
