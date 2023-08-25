@@ -1,6 +1,6 @@
 {
   "name": "@0xdwong/ai-translator",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "An AI translator",
   "main": "index.js",
   "scripts": {
@@ -42,5 +42,6 @@
     "trailingComma": "none",
     "arrowParens": "avoid"
   },
-  "prepare": "yarn build"
+  "prepare": "yarn build",
+  "files": ["dist/**/*"]
 }
