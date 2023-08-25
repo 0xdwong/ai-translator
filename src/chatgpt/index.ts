@@ -136,7 +136,6 @@ const readTextFile = async (filePath: string): Promise<string> => {
 export async function translate(text: string) {
   await checkConfiguration();
 
-  console.log('==process.argv==', process.argv)
   const args = minimist(process.argv.slice(2));
   const model = resolveModelShorthand(args.m ?? process.env.MODEL_NAME ?? '3');
   const temperature = Number(args.t) || Number(process.env.TEMPERATURE) || 0.1;
