@@ -17,15 +17,20 @@ import { Status, statusToText } from './status';
 
 dotenv.config();
 // export const apiKey = process.env.OPENAI_API_KEY;
-const baseDir = process.env.GPT_TRANSLATOR_BASE_DIR ?? process.cwd();
-const promptFile = path.resolve(
-  process.cwd(),
-  'src/chatgpt/prompt.md'
-);
+// const baseDir = process.env.GPT_TRANSLATOR_BASE_DIR ?? process.cwd();
+// const promptFile = path.resolve(
+//   process.cwd(),
+//   'src/chatgpt/prompt.md'
+// );
+
+export let config = {
+  "OPENAI_API_KEY": "",
+}
+
 
 const checkConfiguration = async () => {
   const errors = [];
-  if (!process.env.OPENAI_API_KEY) {
+  if (!config.OPENAI_API_KEY) {
     errors.push('The OPENAI_API_KEY environment variable is not set.');
   }
   // try {
@@ -36,7 +41,8 @@ const checkConfiguration = async () => {
   if (errors.length) {
     console.error('Errors:');
     console.error(errors.join('\n'));
-    process.exit(1);
+    // process.exit(1);
+    throw "configuration error";
   }
 };
 
@@ -126,7 +132,7 @@ const readTextFile = async (filePath: string): Promise<string> => {
   } catch (e: any) {
     if (e.code === 'ENOENT') {
       console.error(`File not found: ${filePath}`);
-      process.exit(1);
+      // process.exit(1);
     } else {
       throw e;
     }
@@ -136,14 +142,21 @@ const readTextFile = async (filePath: string): Promise<string> => {
 export async function translate(text: string) {
   await checkConfiguration();
 
-  const args = minimist(process.argv.slice(2));
-  const model = resolveModelShorthand(args.m ?? process.env.MODEL_NAME ?? '3');
-  const temperature = Number(args.t) || Number(process.env.TEMPERATURE) || 0.1;
-  const fragmentSize =
-    Number(args.f) || Number(process.env.FRAGMENT_TOKEN_SIZE) || 2048;
-  const apiCallInterval =
-    Number(args.i) || Number(process.env.API_CALL_INTERVAL) || 0;
-  const httpsProxy = process.env.HTTPS_PROXY;
+  // const args = minimist(process.argv.slice(2));
+  // const model = resolveModelShorthand(args.m ?? process.env.MODEL_NAME ?? '3');
+  // const temperature = Number(args.t) || Number(process.env.TEMPERATURE) || 0.1;
+  // const fragmentSize =
+  //   Number(args.f) || Number(process.env.FRAGMENT_TOKEN_SIZE) || 2048;
+  // const apiCallInterval =
+  //   Number(args.i) || Number(process.env.API_CALL_INTERVAL) || 0;
+  // const httpsProxy = process.env.HTTPS_PROXY;
+
+    const model = resolveModelShorthand('3');
+  const temperature = 0.1;
+  const fragmentSize = 2048;
+  const apiCallInterval = 0;
+  const httpsProxy = "";
+
 
   // if (args._.length !== 1)
   //   throw new Error('Specify one (and only one) markdown file.');
@@ -178,13 +191,14 @@ export async function translate(text: string) {
 
   console.log(`Model: ${model}, Temperature: ${temperature}\n\n`);
   const printStatus = () => {
-    process.stdout.write('\x1b[1A\x1b[2K'); // clear previous line
+    // process.stdout.write('\x1b[1A\x1b[2K'); // clear previous line
+    console.log('\n');
     console.log(statusToText(status));
   };
   printStatus();
 
   const callApi = configureApiCaller({
-    apiKey: process.env.OPENAI_API_KEY!,
+    apiKey: config.OPENAI_API_KEY!,
     rateLimit: apiCallInterval,
     httpsProxy
   });

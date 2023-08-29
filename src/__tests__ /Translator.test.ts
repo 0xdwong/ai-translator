@@ -1,8 +1,7 @@
 import * as chatgptTranslator  from '../index';
 
 test('My Greeter', async() => {
-    process.env.OPENAI_API_KEY = ''; // enter your key
-
+    chatgptTranslator.init({'OPENAI_API_KEY': ''});
     const translation = await chatgptTranslator.translate('hello world');
    console.log('====translation====', translation);
 });
