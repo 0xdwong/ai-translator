@@ -1,7 +1,6 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
-import * as dotenv from 'dotenv';
 import minimist from 'minimist';
 import configureApiCaller, { ApiCaller, ApiOptions } from './api';
 import {
@@ -15,7 +14,6 @@ import { Status, statusToText } from './status';
 // npx ts-node-esm index.ts <file_name>
 
 
-dotenv.config();
 // export const apiKey = process.env.OPENAI_API_KEY;
 // const baseDir = process.env.GPT_TRANSLATOR_BASE_DIR ?? process.cwd();
 // const promptFile = path.resolve(
