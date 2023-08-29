@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import * as rl from 'node:readline';
+import * as rl from 'readline';
 import { Status } from './status.js';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 
